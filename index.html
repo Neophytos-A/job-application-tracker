@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobTrack | Job Application Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="app-header">
+      <h1 class="app-title">JobTrack</h1>
+
+      <button
+        class="add-application-btn"
+        id="add-application-btn"
+        type="button"
+      >
+        + Add Application
+      </button>
+    </header>
+
+    <main class="dashboard">
+      <section class="stats-grid">
+        <div class="stat-card">
+          <h2>Total Applications</h2>
+          <p id="total-applications-count">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h2>Interviews</h2>
+          <p id="interview-count">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h2>Offers</h2>
+          <p id="offer-count">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h2>Rejected</h2>
+          <p id="rejected-count">0</p>
+        </div>
+      </section>
+
+      <section class="application-controls">
+        <input
+          type="search"
+          id="application-search"
+          placeholder="Search applications..."
+        />
+
+        <select id="status-filter">
+          <option value="all">All statuses</option>
+          <option value="applied">Applied</option>
+          <option value="interview">Interview</option>
+          <option value="technical-interview">Technical Interview</option>
+          <option value="offer">Offer</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+        <select id="sort-applications">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="company-asc">Company A-Z</option>
+          <option value="company-desc">Company Z-A</option>
+        </select>
+      </section>
+
+      <section class="applications-section">
+        <h2>Applications</h2>
+
+        <div class="applications-list" id="applications-list">
+          <p class="empty-state" id="empty-state">No applications yet.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
