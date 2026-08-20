@@ -136,3 +136,52 @@ body {
   color: #6b7280;
   font-size: 1rem;
 }
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .application-controls {
+    flex-wrap: wrap;
+  }
+
+  #application-search {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 1rem;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .add-application-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .dashboard {
+    padding: 0 1rem 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .application-controls {
+    flex-direction: column;
+  }
+
+  #application-search {
+    width: 100%;
+  }
+
+  .application-controls select {
+    width: 100%;
+  }
+}
