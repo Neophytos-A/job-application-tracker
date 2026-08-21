@@ -8,6 +8,7 @@
   </head>
 
   <body>
+    <!-- HEADER-->
     <header class="app-header">
       <h1 class="app-title">JobTrack</h1>
 
@@ -20,6 +21,7 @@
       </button>
     </header>
 
+    <!-- MAIN APP -->
     <main class="dashboard">
       <section class="stats-grid">
         <div class="stat-card">
@@ -75,6 +77,84 @@
         </div>
       </section>
     </main>
+
+    <!-- APPLICATION FORM -->
+    <div class="modal-overlay" id="application-modal">
+      <div class="application-modal">
+        <form class="application-form" id="application-form">
+          <h2 id="application-modal-title">Add Application</h2>
+
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" required />
+          </div>
+
+          <div class="form-group">
+            <label for="position">Position</label>
+            <input type="text" id="position" name="position" required />
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" />
+          </div>
+
+          <div class="form-group">
+            <label for="salary">Salary</label>
+            <input
+              type="number"
+              id="salary"
+              name="salary"
+              min="0"
+              placeholder="e.g. 25000"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="application-date">Application Date</label>
+            <input
+              type="date"
+              id="application-date"
+              name="application-date"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <select id="application-status" name="status" required>
+              <option value="applied">Applied</option>
+              <option value="interview">Interview</option>
+              <option value="technical-interview">Technical Interview</option>
+              <option value="offer">Offer</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea
+              id="notes"
+              name="notes"
+              placeholder="Add notes about this application..."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="cancel-btn"
+              id="cancel-application-btn"
+            >
+              Cancel
+            </button>
+
+            <button type="submit" class="save-application-btn">
+              Save Application
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
