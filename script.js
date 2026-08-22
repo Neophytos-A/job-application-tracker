@@ -12,3 +12,11 @@ const salaryInput = document.getElementById("salary");
 const dateInput = document.getElementById("application-date");
 const statusSelect = document.getElementById("application-status");
 const notesInput = document.getElementById("notes");
+
+addApplicationBtn.addEventListener("click", function () {
+  applicationModal.classList.add("active");
+});
+
+cancelApplicationBtn.addEventListener("click", function () {
+  applicationModal.classList.remove("active");
+});
