@@ -3,6 +3,7 @@ const addApplicationBtn = document.getElementById("add-application-btn");
 const applicationModal = document.getElementById("application-modal");
 const cancelApplicationBtn = document.getElementById("cancel-application-btn");
 const applicationForm = document.getElementById("application-form");
+const applicationList = document.getElementById("applications-list");
 
 // Form fields
 const companyInput = document.getElementById("company");
@@ -13,7 +14,7 @@ const dateInput = document.getElementById("application-date");
 const statusSelect = document.getElementById("application-status");
 const notesInput = document.getElementById("notes");
 
-// Array that holds all aplication objects
+// Array that holds all aplications
 let applications = [];
 
 // Open Modal
@@ -52,7 +53,51 @@ applicationForm.addEventListener("submit", (event) => {
   };
 
   applications.push(newApplication);
-
-  console.log(newApplication);
-  console.log(applications);
+  renderApplications();
+  applicationForm.reset();
+  applicationModal.classList.remove("active");
 });
+
+function renderApplications() {
+  applicationList.innerHTML = "";
+
+  if (applications.length === 0) {
+    applicationList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
+    return;
+  }
+
+  applications.forEach((application) => {
+    const applicationCard = document.createElement("article");
+    applicationCard.classList.add("application-card");
+
+    const companyName = document.createElement("h3");
+    companyName.textContent = application.company;
+
+    const position = document.createElement("p");
+    position.classList.add("application-position");
+    position.textContent = application.position;
+
+    const location = document.createElement("p");
+    location.textContent = application.location;
+
+    const salary = document.createElement("p");
+    salary.textContent = application.salary;
+
+    const date = document.createElement("p");
+    date.textContent = application.applicationDate;
+
+    const status = document.createElement("span");
+    status.textContent = application.status;
+
+    applicationCard.append(
+      companyName,
+      position,
+      location,
+      salary,
+      date,
+      status,
+    );
+
+    applicationList.appendChild(applicationCard);
+  });
+}
