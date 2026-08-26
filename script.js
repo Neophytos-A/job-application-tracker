@@ -3,7 +3,7 @@ const addApplicationBtn = document.getElementById("add-application-btn");
 const applicationModal = document.getElementById("application-modal");
 const cancelApplicationBtn = document.getElementById("cancel-application-btn");
 const applicationForm = document.getElementById("application-form");
-const applicationList = document.getElementById("applications-list");
+const applicationsList = document.getElementById("applications-list");
 
 // Form fields
 const companyInput = document.getElementById("company");
@@ -14,7 +14,7 @@ const dateInput = document.getElementById("application-date");
 const statusSelect = document.getElementById("application-status");
 const notesInput = document.getElementById("notes");
 
-// Array that holds all aplications
+// Array that holds all applications
 let applications = [];
 
 // Open Modal
@@ -59,10 +59,10 @@ applicationForm.addEventListener("submit", (event) => {
 });
 
 function renderApplications() {
-  applicationList.innerHTML = "";
+  applicationsList.innerHTML = "";
 
   if (applications.length === 0) {
-    applicationList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
+    applicationsList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
     return;
   }
 
@@ -70,34 +70,45 @@ function renderApplications() {
     const applicationCard = document.createElement("article");
     applicationCard.classList.add("application-card");
 
+    const cardHeader = document.createElement("div");
+    cardHeader.classList.add("application-card-header");
+
     const companyName = document.createElement("h3");
+    companyName.classList.add("application-company");
     companyName.textContent = application.company;
 
     const position = document.createElement("p");
     position.classList.add("application-position");
     position.textContent = application.position;
 
+    const details = document.createElement("div");
+    details.classList.add("application-details");
+
     const location = document.createElement("p");
+    location.classList.add("application-detail");
     location.textContent = application.location;
 
     const salary = document.createElement("p");
+    salary.classList.add("application-detail");
     salary.textContent = application.salary;
 
     const date = document.createElement("p");
+    date.classList.add("application-detail");
     date.textContent = application.applicationDate;
 
     const status = document.createElement("span");
+    status.classList.add("application-status");
     status.textContent = application.status;
 
-    applicationCard.append(
-      companyName,
-      position,
-      location,
-      salary,
-      date,
-      status,
-    );
+    cardHeader.append(companyName, status);
+    details.append(location, salary, date);
 
-    applicationList.appendChild(applicationCard);
+    const notes = document.createElement("p");
+    notes.classList.add("application-notes");
+    notes.textContent = application.notes;
+
+    applicationCard.append(cardHeader, position, details, notes);
+
+    applicationsList.appendChild(applicationCard);
   });
 }
