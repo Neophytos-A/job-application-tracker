@@ -14,6 +14,17 @@ const dateInput = document.getElementById("application-date");
 const statusSelect = document.getElementById("application-status");
 const notesInput = document.getElementById("notes");
 
+// DOM REFERENCES FOR STATS
+const totalApplicationsCount = document.getElementById(
+  "total-applications-count",
+);
+
+const interviewCount = document.getElementById("interview-count");
+
+const offerCount = document.getElementById("offer-count");
+
+const rejectedCount = document.getElementById("rejected-count");
+
 // Array that holds all applications
 let applications = [];
 
@@ -54,6 +65,7 @@ applicationForm.addEventListener("submit", (event) => {
 
   applications.push(newApplication);
   renderApplications();
+  updateStats();
   applicationForm.reset();
   applicationModal.classList.remove("active");
 });
@@ -111,4 +123,27 @@ function renderApplications() {
 
     applicationsList.appendChild(applicationCard);
   });
+}
+
+function updateStats() {
+  totalApplicationsCount.textContent = applications.length;
+
+  const interviews = applications.filter((application) => {
+    return (
+      application.status === "interview" ||
+      application.status === "technical-interview"
+    );
+  });
+
+  const offers = applications.filter((application) => {
+    return application.status === "offer";
+  });
+
+  const rejected = applications.filter((application) => {
+    return application.status === "rejected";
+  });
+
+  interviewCount.textContent = interviews.length;
+  offerCount.textContent = offers.length;
+  rejectedCount.textContent = rejected.length;
 }
