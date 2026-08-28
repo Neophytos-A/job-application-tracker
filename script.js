@@ -64,6 +64,8 @@ applicationForm.addEventListener("submit", (event) => {
   };
 
   applications.push(newApplication);
+  saveApplications();
+  loadApplications();
   renderApplications();
   updateStats();
   applicationForm.reset();
@@ -125,6 +127,7 @@ function renderApplications() {
   });
 }
 
+// Update statistics when we add a new application
 function updateStats() {
   totalApplicationsCount.textContent = applications.length;
 
@@ -146,4 +149,20 @@ function updateStats() {
   interviewCount.textContent = interviews.length;
   offerCount.textContent = offers.length;
   rejectedCount.textContent = rejected.length;
+}
+
+// Save the application in localStorage
+function saveApplications() {
+  const applicationsJSON = JSON.stringify(applications);
+  localStorage.setItem("applications", applicationsJSON);
+}
+
+// We make sure that the data exists after the page is refreshed
+function loadApplications() {
+  const savedApplications = localStorage.getItem("applications");
+
+  // Check if there is any application
+  if (saveApplications) {
+    applications = JSON.parse(savedApplications);
+  }
 }
