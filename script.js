@@ -27,15 +27,20 @@ const rejectedCount = document.getElementById("rejected-count");
 
 // Array that holds all applications
 let applications = [];
+let editingApplicationId = null;
 
 // Open Modal
 addApplicationBtn.addEventListener("click", function () {
   applicationModal.classList.add("active");
+  editingApplicationId = null;
+  applicationForm.reset();
 });
 
 // Close Modal
 cancelApplicationBtn.addEventListener("click", function () {
   applicationModal.classList.remove("active");
+  editingApplicationId = null;
+  applicationForm.reset();
 });
 
 // Prevents the browser from refreshing the page when the form is submitted
@@ -51,21 +56,36 @@ applicationForm.addEventListener("submit", (event) => {
   const status = statusSelect.value;
   const notes = notesInput.value.trim();
 
-  // Object that represents a job application
-  const newApplication = {
-    id: Date.now(),
-    company: company,
-    position: position,
-    location: location,
-    salary: salary,
-    applicationDate: applicationDate,
-    status: status,
-    notes: notes,
-  };
+  // Create new object that represents a job application
+  if (editingApplicationId === null) {
+    const newApplication = {
+      id: Date.now(),
+      company: company,
+      position: position,
+      location: location,
+      salary: salary,
+      applicationDate: applicationDate,
+      status: status,
+      notes: notes,
+    };
+    applications.push(newApplication);
+  } else {
+    const applicationToEdit = applications.find((application) => {
+      return application.id === editingApplicationId;
+    });
 
-  applications.push(newApplication);
+    applicationToEdit.company = company;
+    applicationToEdit.position = position;
+    applicationToEdit.location = location;
+    applicationToEdit.salary = salary;
+    applicationToEdit.applicationDate = applicationDate;
+    applicationToEdit.status = status;
+    applicationToEdit.notes = notes;
+
+    editingApplicationId = null;
+  }
+
   saveApplications();
-  loadApplications();
   renderApplications();
   updateStats();
   applicationForm.reset();
@@ -114,6 +134,20 @@ function renderApplications() {
     status.classList.add("application-status");
     status.textContent = application.status;
 
+    const applicationActions = document.createElement("div");
+    applicationActions.classList.add("application-actions");
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-application-btn");
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+
+    const editButton = document.createElement("button");
+    editButton.classList.add("edit-application-btn");
+    editButton.type = "button";
+    editButton.textContent = "Edit";
+
+    applicationActions.append(editButton, deleteButton);
     cardHeader.append(companyName, status);
     details.append(location, salary, date);
 
@@ -121,13 +155,49 @@ function renderApplications() {
     notes.classList.add("application-notes");
     notes.textContent = application.notes;
 
-    applicationCard.append(cardHeader, position, details, notes);
+    // Delete application
+    deleteButton.addEventListener("click", function () {
+      applications = applications.filter((savedApplication) => {
+        // Keep all applications except the selected one
+        return savedApplication.id !== application.id;
+      });
+
+      saveApplications();
+      renderApplications();
+      updateStats();
+    });
+
+    // Edit application
+    editButton.addEventListener("click", function () {
+      // The application we're editing according to ID
+      editingApplicationId = application.id;
+
+      // Fill form inputs
+      companyInput.value = application.company;
+      positionInput.value = application.position;
+      locationInput.value = application.location;
+      salaryInput.value = application.salary;
+      dateInput.value = application.applicationDate;
+      statusSelect.value = application.status;
+      notesInput.value = application.notes;
+
+      // Open Modal
+      applicationModal.classList.add("active");
+    });
+
+    applicationCard.append(
+      cardHeader,
+      position,
+      details,
+      notes,
+      applicationActions,
+    );
 
     applicationsList.appendChild(applicationCard);
   });
 }
 
-// Update statistics when we add a new application
+// Update dashboard statistics
 function updateStats() {
   totalApplicationsCount.textContent = applications.length;
 
@@ -151,18 +221,23 @@ function updateStats() {
   rejectedCount.textContent = rejected.length;
 }
 
-// Save the application in localStorage
+// Save applications to localStorage
 function saveApplications() {
   const applicationsJSON = JSON.stringify(applications);
   localStorage.setItem("applications", applicationsJSON);
 }
 
-// We make sure that the data exists after the page is refreshed
+// Restore saved applications from localStorage
 function loadApplications() {
   const savedApplications = localStorage.getItem("applications");
 
   // Check if there is any application
-  if (saveApplications) {
+  if (savedApplications) {
     applications = JSON.parse(savedApplications);
   }
 }
+
+// Initialize the app
+loadApplications();
+renderApplications();
+updateStats();
