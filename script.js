@@ -4,6 +4,7 @@ const applicationModal = document.getElementById("application-modal");
 const cancelApplicationBtn = document.getElementById("cancel-application-btn");
 const applicationForm = document.getElementById("application-form");
 const applicationsList = document.getElementById("applications-list");
+const applicationSearch = document.getElementById("application-search");
 
 // Form fields
 const companyInput = document.getElementById("company");
@@ -42,6 +43,9 @@ cancelApplicationBtn.addEventListener("click", function () {
   editingApplicationId = null;
   applicationForm.reset();
 });
+
+// Search applications
+applicationSearch.addEventListener("input", searchApplications);
 
 // Prevents the browser from refreshing the page when the form is submitted
 applicationForm.addEventListener("submit", (event) => {
@@ -86,21 +90,21 @@ applicationForm.addEventListener("submit", (event) => {
   }
 
   saveApplications();
-  renderApplications();
+  renderApplications(applications);
   updateStats();
   applicationForm.reset();
   applicationModal.classList.remove("active");
 });
 
-function renderApplications() {
+function renderApplications(applicationsToRender) {
   applicationsList.innerHTML = "";
 
-  if (applications.length === 0) {
+  if (applicationsToRender.length === 0) {
     applicationsList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
     return;
   }
 
-  applications.forEach((application) => {
+  applicationsToRender.forEach((application) => {
     const applicationCard = document.createElement("article");
     applicationCard.classList.add("application-card");
 
@@ -163,7 +167,7 @@ function renderApplications() {
       });
 
       saveApplications();
-      renderApplications();
+      renderApplications(application);
       updateStats();
     });
 
@@ -237,7 +241,21 @@ function loadApplications() {
   }
 }
 
+function searchApplications() {
+  const search = applicationSearch.value.trim().toLowerCase();
+
+  const filteredApplications = applications.filter((application) => {
+    return (
+      application.company.toLowerCase().includes(search) ||
+      application.position.toLowerCase().includes(search) ||
+      application.location.toLowerCase().includes(search)
+    );
+  });
+
+  renderApplications(filteredApplications);
+}
+
 // Initialize the app
 loadApplications();
-renderApplications();
+renderApplications(applications);
 updateStats();
