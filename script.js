@@ -5,6 +5,7 @@ const cancelApplicationBtn = document.getElementById("cancel-application-btn");
 const applicationForm = document.getElementById("application-form");
 const applicationsList = document.getElementById("applications-list");
 const applicationSearch = document.getElementById("application-search");
+const statusFilter = document.getElementById("status-filter");
 
 // Form fields
 const companyInput = document.getElementById("company");
@@ -46,6 +47,9 @@ cancelApplicationBtn.addEventListener("click", function () {
 
 // Search applications
 applicationSearch.addEventListener("input", searchApplications);
+
+// Filter applications by status
+statusFilter.addEventListener("change", filterByStatus);
 
 // Prevents the browser from refreshing the page when the form is submitted
 applicationForm.addEventListener("submit", (event) => {
@@ -250,6 +254,21 @@ function searchApplications() {
       application.position.toLowerCase().includes(search) ||
       application.location.toLowerCase().includes(search)
     );
+  });
+
+  renderApplications(filteredApplications);
+}
+
+function filterByStatus() {
+  const status = statusFilter.value;
+
+  if (status === "all") {
+    renderApplications(applications);
+    return;
+  }
+
+  const filteredApplications = applications.filter((application) => {
+    return application.status === status;
   });
 
   renderApplications(filteredApplications);
