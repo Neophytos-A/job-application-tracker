@@ -46,10 +46,10 @@ cancelApplicationBtn.addEventListener("click", function () {
 });
 
 // Search applications
-applicationSearch.addEventListener("input", searchApplications);
+applicationSearch.addEventListener("input", applyFilters);
 
 // Filter applications by status
-statusFilter.addEventListener("change", filterByStatus);
+statusFilter.addEventListener("change", applyFilters);
 
 // Prevents the browser from refreshing the page when the form is submitted
 applicationForm.addEventListener("submit", (event) => {
@@ -245,30 +245,19 @@ function loadApplications() {
   }
 }
 
-function searchApplications() {
+function applyFilters() {
   const search = applicationSearch.value.trim().toLowerCase();
-
-  const filteredApplications = applications.filter((application) => {
-    return (
-      application.company.toLowerCase().includes(search) ||
-      application.position.toLowerCase().includes(search) ||
-      application.location.toLowerCase().includes(search)
-    );
-  });
-
-  renderApplications(filteredApplications);
-}
-
-function filterByStatus() {
   const status = statusFilter.value;
 
-  if (status === "all") {
-    renderApplications(applications);
-    return;
-  }
-
   const filteredApplications = applications.filter((application) => {
-    return application.status === status;
+    const matchesSearch =
+      application.company.toLowerCase().includes(search) ||
+      application.position.toLowerCase().includes(search) ||
+      application.location.toLowerCase().includes(search);
+
+    const matchesStatus = status === "all" || application.status === status;
+
+    return matchesSearch && matchesStatus;
   });
 
   renderApplications(filteredApplications);
