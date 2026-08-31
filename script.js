@@ -6,6 +6,7 @@ const applicationForm = document.getElementById("application-form");
 const applicationsList = document.getElementById("applications-list");
 const applicationSearch = document.getElementById("application-search");
 const statusFilter = document.getElementById("status-filter");
+const sortApplications = document.getElementById("sort-applications");
 
 // Form fields
 const companyInput = document.getElementById("company");
@@ -50,6 +51,9 @@ applicationSearch.addEventListener("input", applyFilters);
 
 // Filter applications by status
 statusFilter.addEventListener("change", applyFilters);
+
+// Sort applications
+sortApplications.addEventListener("change", applyFilters);
 
 // Prevents the browser from refreshing the page when the form is submitted
 applicationForm.addEventListener("submit", (event) => {
@@ -248,6 +252,7 @@ function loadApplications() {
 function applyFilters() {
   const search = applicationSearch.value.trim().toLowerCase();
   const status = statusFilter.value;
+  const sort = sortApplications.value;
 
   const filteredApplications = applications.filter((application) => {
     const matchesSearch =
@@ -259,6 +264,30 @@ function applyFilters() {
 
     return matchesSearch && matchesStatus;
   });
+
+  if (sort === "newest") {
+    filteredApplications.sort((a, b) => {
+      return new Date(b.applicationDate) - new Date(a.applicationDate);
+    });
+  }
+
+  if (sort === "oldest") {
+    filteredApplications.sort((a, b) => {
+      return new Date(a.applicationDate) - new Date(b.applicationDate);
+    });
+  }
+
+  if (sort === "company-asc") {
+    filteredApplications.sort((a, b) => {
+      return a.company.localeCompare(b.company);
+    });
+  }
+
+  if (sort === "company-desc") {
+    filteredApplications.sort((a, b) => {
+      return b.company.localeCompare(a.company);
+    });
+  }
 
   renderApplications(filteredApplications);
 }
