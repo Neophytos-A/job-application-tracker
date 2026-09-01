@@ -337,17 +337,34 @@ body {
 .application-status {
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background-color: var(--color-background-status);
-  color: var(--color-primary);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   text-transform: capitalize;
+}
+
+.status-applied {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-interview {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-offer {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 .application-position {
   color: var(--color-text-position);
   font-size: 1rem;
-  font-weight: 500;
 }
 
 .application-details {

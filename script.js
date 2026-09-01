@@ -104,11 +104,28 @@ applicationForm.addEventListener("submit", (event) => {
   applicationModal.classList.remove("active");
 });
 
+const salaryFormatter = new Intl.NumberFormat("en-CY", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+
+const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
 function renderApplications(applicationsToRender) {
   applicationsList.innerHTML = "";
 
   if (applicationsToRender.length === 0) {
-    applicationsList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
+    if (applications.length === 0) {
+      applicationsList.innerHTML = `<p class="empty-state">No applications yet.</p>`;
+    } else {
+      applicationsList.innerHTML = `<p class="empty-state">No applications match your search or filters.</p>`;
+    }
+
     return;
   }
 
@@ -136,14 +153,20 @@ function renderApplications(applicationsToRender) {
 
     const salary = document.createElement("p");
     salary.classList.add("application-detail");
-    salary.textContent = application.salary;
+
+    salary.textContent = application.salary
+      ? salaryFormatter.format(application.salary)
+      : "Salary not specified";
 
     const date = document.createElement("p");
     date.classList.add("application-detail");
-    date.textContent = application.applicationDate;
+
+    const applicationDate = new Date(application.applicationDate);
+    date.textContent = dateFormatter.format(applicationDate);
 
     const status = document.createElement("span");
     status.classList.add("application-status");
+    status.classList.add(`status-${application.status}`);
     status.textContent = application.status;
 
     const applicationActions = document.createElement("div");
