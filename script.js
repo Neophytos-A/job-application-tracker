@@ -9,6 +9,12 @@ const statusFilter = document.getElementById("status-filter");
 const sortApplications = document.getElementById("sort-applications");
 
 // Form fields
+const applicationFormHeader = document.getElementById(
+  "application-modal-title",
+);
+const applicationFormSubmitBtn = document.getElementById(
+  "save-application-btn",
+);
 const companyInput = document.getElementById("company");
 const positionInput = document.getElementById("position");
 const locationInput = document.getElementById("location");
@@ -34,16 +40,30 @@ let editingApplicationId = null;
 
 // Open Modal
 addApplicationBtn.addEventListener("click", function () {
-  applicationModal.classList.add("active");
   editingApplicationId = null;
   applicationForm.reset();
+
+  applicationFormHeader.textContent = "Add Application";
+  applicationFormSubmitBtn.textContent = "Save Application";
+
+  applicationModal.classList.add("active");
 });
 
-// Close Modal
-cancelApplicationBtn.addEventListener("click", function () {
-  applicationModal.classList.remove("active");
-  editingApplicationId = null;
-  applicationForm.reset();
+// Close with Cancel button
+cancelApplicationBtn.addEventListener("click", closeModal);
+
+// Close by clicking outside the modal
+applicationModal.addEventListener("click", function (event) {
+  if (event.target === applicationModal) {
+    closeModal();
+  }
+});
+
+// Close with Escape key
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape" && applicationModal.classList.contains("active")) {
+    closeModal();
+  }
 });
 
 // Search applications
@@ -149,7 +169,9 @@ function renderApplications(applicationsToRender) {
 
     const location = document.createElement("p");
     location.classList.add("application-detail");
-    location.textContent = application.location;
+    location.textContent = application.location
+      ? application.location
+      : "Location not specified";
 
     const salary = document.createElement("p");
     salary.classList.add("application-detail");
@@ -188,7 +210,9 @@ function renderApplications(applicationsToRender) {
 
     const notes = document.createElement("p");
     notes.classList.add("application-notes");
-    notes.textContent = application.notes;
+    notes.textContent = application.notes
+      ? application.notes
+      : "No additional notes";
 
     // Delete application
     deleteButton.addEventListener("click", function () {
@@ -215,6 +239,9 @@ function renderApplications(applicationsToRender) {
       dateInput.value = application.applicationDate;
       statusSelect.value = application.status;
       notesInput.value = application.notes;
+
+      applicationFormHeader.textContent = "Edit Application";
+      applicationFormSubmitBtn.textContent = "Save Changes";
 
       // Open Modal
       applicationModal.classList.add("active");
@@ -313,6 +340,12 @@ function applyFilters() {
   }
 
   renderApplications(filteredApplications);
+}
+
+function closeModal() {
+  applicationModal.classList.remove("active");
+  editingApplicationId = null;
+  applicationForm.reset();
 }
 
 // Initialize the app
